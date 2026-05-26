@@ -107,6 +107,10 @@ The Compose stack runs `llama-server` with `--hf-repo` so models are fetched aut
 
 Models are cached under `inference/llama/models` (mounted into the container as `/models`).
 
+### TTS settings
+
+- `TTS_VOICE`: Kokoro voice id used by the agent (default `af_bella`)
+
 ### STT settings (Nemotron default)
 
 - `STT_PROVIDER`: `nemotron` (default) or `whisper`

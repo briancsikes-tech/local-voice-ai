@@ -146,6 +146,7 @@ async def my_agent(ctx: JobContext):
     stt_base_url = os.getenv("STT_BASE_URL", default_stt_base_url)
     stt_model = os.getenv("STT_MODEL", default_stt_model)
     stt_api_key = os.getenv("STT_API_KEY", "no-key-needed")
+    tts_voice = os.getenv("TTS_VOICE", "af_bella")
 
     logger.info(
         "Starting agent with STT provider=%s model=%s base_url=%s",
@@ -171,7 +172,7 @@ async def my_agent(ctx: JobContext):
             base_url="http://kokoro:8880/v1",
             # base_url="http://localhost:8880/v1", # uncomment for local testing
             model="kokoro",
-            voice="af_bella",
+            voice=tts_voice,
             api_key="no-key-needed"
         ),
         turn_detection=MultilingualModel(),

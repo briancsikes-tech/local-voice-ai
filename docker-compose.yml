@@ -107,6 +107,7 @@ services:
       - OPENAI_API_KEY=${OPENAI_API_KEY:-no-key-needed}
       - GROQ_API_KEY=${GROQ_API_KEY:-no-key-needed}
       - WEB_SEARCH_BASE_URL=${WEB_SEARCH_BASE_URL:-http://searxng:8080}
+      - TTS_VOICE=${TTS_VOICE:-af_bella}
     depends_on:
       livekit:
         condition: service_started
