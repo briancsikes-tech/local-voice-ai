@@ -108,6 +108,8 @@ services:
       - GROQ_API_KEY=${GROQ_API_KEY:-no-key-needed}
       - WEB_SEARCH_BASE_URL=${WEB_SEARCH_BASE_URL:-http://searxng:8080}
       - TTS_VOICE=${TTS_VOICE:-af_bella}
+      - WAKE_WORD_ENABLED=${WAKE_WORD_ENABLED:-true}
+      - WAKE_WORDS=${WAKE_WORDS:-hey bella,bella}
     depends_on:
       livekit:
         condition: service_started

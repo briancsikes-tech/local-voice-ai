@@ -1,7 +1,7 @@
 import pytest
 from livekit.agents import AgentSession, inference, llm
 
-from agent import Assistant, _format_search_results
+from agent import Assistant, _format_search_results, _is_sleep_request, _strip_wake_word
 
 
 def _llm() -> llm.LLM:
@@ -30,6 +30,41 @@ def test_format_search_results() -> None:
     assert "A short summary from the result." in formatted
     assert "Source: https://example.com/result" in formatted
     assert "Second result" not in formatted
+
+
+def test_strip_wake_word_removes_phrase_and_punctuation() -> None:
+    heard_wake_word, command = _strip_wake_word(
+        "Hey Bella, search for local weather",
+        ["hey bella"],
+    )
+
+    assert heard_wake_word is True
+    assert command == "search for local weather"
+
+
+def test_strip_wake_word_allows_punctuation_between_words() -> None:
+    heard_wake_word, command = _strip_wake_word(
+        "Hey, Bella. Search for local weather",
+        ["hey bella"],
+    )
+
+    assert heard_wake_word is True
+    assert command == "Search for local weather"
+
+
+def test_strip_wake_word_ignores_non_wake_phrase() -> None:
+    heard_wake_word, command = _strip_wake_word(
+        "search for local weather",
+        ["hey bella"],
+    )
+
+    assert heard_wake_word is False
+    assert command == "search for local weather"
+
+
+def test_is_sleep_request() -> None:
+    assert _is_sleep_request("stop listening") is True
+    assert _is_sleep_request("what are you listening to") is False
 
 
 @pytest.mark.asyncio

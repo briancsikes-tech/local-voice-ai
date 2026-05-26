@@ -111,6 +111,13 @@ Models are cached under `inference/llama/models` (mounted into the container as 
 
 - `TTS_VOICE`: Kokoro voice id used by the agent (default `af_bella`)
 
+### Wake word settings
+
+- `WAKE_WORD_ENABLED`: When `true`, the agent ignores turns until it hears a configured wake phrase.
+- `WAKE_WORDS`: Comma-separated wake phrases, such as `hey bella,bella`.
+
+This wake gate runs after local speech-to-text transcription, so it keeps the assistant quiet until addressed but does not stop microphone audio from reaching the local agent stack.
+
 ### STT settings (Nemotron default)
 
 - `STT_PROVIDER`: `nemotron` (default) or `whisper`
