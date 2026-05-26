@@ -16,6 +16,17 @@ services:
     networks:
       - agent_network
 
+  searxng:
+    image: docker.io/searxng/searxng:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./inference/searxng:/etc/searxng:rw
+    environment:
+      - SEARXNG_BASE_URL=http://localhost:8080/
+    networks:
+      - agent_network
+
   nemotron:
     build:
       context: ./inference/nemotron
@@ -95,10 +106,13 @@ services:
       - LIVEKIT_AGENT_PORT=${LIVEKIT_AGENT_PORT:-7880}
       - OPENAI_API_KEY=${OPENAI_API_KEY:-no-key-needed}
       - GROQ_API_KEY=${GROQ_API_KEY:-no-key-needed}
+      - WEB_SEARCH_BASE_URL=${WEB_SEARCH_BASE_URL:-http://searxng:8080}
     depends_on:
       livekit:
         condition: service_started
       kokoro:
+        condition: service_started
+      searxng:
         condition: service_started
       nemotron:
         condition: service_healthy

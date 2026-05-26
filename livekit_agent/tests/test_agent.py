@@ -1,11 +1,35 @@
 import pytest
 from livekit.agents import AgentSession, inference, llm
 
-from agent import Assistant
+from agent import Assistant, _format_search_results
 
 
 def _llm() -> llm.LLM:
     return inference.LLM(model="openai/gpt-4.1-mini")
+
+
+def test_format_search_results() -> None:
+    payload = {
+        "results": [
+            {
+                "title": "Example result",
+                "content": "A short summary from the result.",
+                "url": "https://example.com/result",
+            },
+            {
+                "title": "Second result",
+                "content": "Another summary.",
+                "url": "https://example.com/second",
+            },
+        ]
+    }
+
+    formatted = _format_search_results(payload, max_results=1)
+
+    assert "Example result" in formatted
+    assert "A short summary from the result." in formatted
+    assert "Source: https://example.com/result" in formatted
+    assert "Second result" not in formatted
 
 
 @pytest.mark.asyncio
